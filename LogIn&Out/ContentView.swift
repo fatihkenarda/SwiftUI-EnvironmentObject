@@ -8,17 +8,47 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var userViewModel: UserViewModel
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                Text("Hosgeliniz, \(userViewModel.username)")
+                
+                if(userViewModel.isLoggedin){
+                    NavigationLink(destination: ProfilView() ){
+                                            Text("Profil Sayfasına Git")
+                                                .padding()
+                                                .background(Color.blue)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                        }
+                    
+                    .padding()
+                    
+                    Button("Çıkış Yap"){
+                        userViewModel.logout()
+                    }
+                }
+                
+                else{
+                    Button("Giris Yapiniz"){
+                        userViewModel.login()
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                }
+            }
+            
         }
-        .padding()
+        
     }
 }
 
 #Preview {
-    ContentView()
+            ContentView()
+                        .environmentObject(UserViewModel())
+
 }
